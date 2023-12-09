@@ -35,6 +35,8 @@ Welcome to Tata-iMali, a pioneering financial technology platform built on the X
 
 - **MTN Integration**: Tata-iMali seamlessly integrates with major African telecoms provider MTN's open API to obtain KYC (Know Your Customer) information and enables users to exchange the iMali-ZAR stablecoin for mobile money within the mobile money ecosystem.
 
+- **Tokenized Equities and ETF Trading**: Introducing the capability to trade in tokenized equities and ETFs using the iMali-ZAR stablecoin. This feature allows users to engage in equity and ETF trading on a secure, blockchain-based platform.
+
 ## Dependencies
 
 All project dependencies have been thoughtfully documented in the `package.json` file.
