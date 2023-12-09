@@ -12,28 +12,70 @@ import SignupPage from './Onboarding/SignUp';
 import LoginPage from './Onboarding/login';
 import WelcomeScreen from './Onboarding/welcome'; // Import the WelcomeScreen component
 import WelcomeScreenAdmin from './Onboarding/welcomeAdmin'; // Import the WelcomeScreen component
+import AssetHoldings from './BorrowerOperations/assetHoldings'; // Import the AssetHoldings component
+import Marketplace from './BorrowerOperations/marketPlace'; // Import the AssetHoldings component
+import PurchaseRequests from './AdminOperations/assetPurchaseRequests'; // Import the AssetHoldings component
+import Cashflows from './BorrowerOperations/cashFlows'
+import Accounts from './BorrowerOperations/accounts'
+import Loans from './BorrowerOperations/Loans'
+import cash from './Branding/cash.png';
+import Wallet from './Branding/Wallet.png';
+import Loan from './Branding/Loan.png';
+import Shop from './Branding/Shop.png';
+import { auth, firestore } from './Firebase/config'; // Import the database instance
+import LogRocket from 'logrocket';
+
+
 
 import './App.css';
-import logoH from './Branding/hedera-logo.png';
+
+import dpd from './Branding/Jermone.png'
+
+LogRocket.init('owkqfs/tata-imali');
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userType, setUserType] = useState('');
+  const [userName, setUserName] = useState('');
 
-  const handleLogin = (userType) => {
+  const handleLogin = async (userType) => {
     setIsLoggedIn(true);
     setUserType(userType);
+
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      const userDoc = await firestore.collection('users').doc(currentUser.uid).get();
+      if (userDoc.exists) {
+        const userData = userDoc.data();
+        setUserName(`${userData.firstName} ${userData.surname}`);
+      }
+    }
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserType('');
+    setUserName('');
   };
 
   return (
     <Router>
       <div className="App">
         <div className="view-container">
+        {isLoggedIn && (
+          <nav className='topNav'>
+            
+          <div className="nav-user-info">
+            <span className="user-name">{userName}</span> {/* Replace with dynamic user name */}
+            <img 
+              src= {dpd} /* Replace with dynamic profile picture path */
+              alt="User"
+              className="user-profile-pic"
+              onClick={handleLogout} /* Logout on profile picture click */
+            />
+          </div>
+        </nav>
+        )}
           <Routes>
             <Route
               path="/welcome"
@@ -69,9 +111,17 @@ function App() {
                   <>
                     <Route path="/cashout" element={<CashOut />} />
                     <Route path="/topup" element={<TopUp />} />
+                    <Route path="/cashflows" element={<Cashflows />}>
+                      <Route path="topup" element={<TopUp />} />
+                      <Route path="cashout" element={<CashOut />} />
+                    </Route>
+                    <Route path="/accounts" element={<Accounts />} />
+                    <Route path="/loans" element={<Loans />} />
                     <Route path="/tokenrequest" element={<TokenRequestView />} />
                     <Route path="/transfer" element={<TransferForm />} />
                     <Route path="/checkbalance" element={<TokenBalancesView />} />
+                    <Route path="/assetholdings" element={<AssetHoldings />} />
+                    <Route path="/marketplace" element={<Marketplace />} />
                   </>
                 )}
                 {userType === 'Admin' && (
@@ -79,6 +129,10 @@ function App() {
                     <Route path="/kyc" element={<KYC />} />
                     <Route path="/checkrequests" element={<DisplayTokenRequests />} />
                     <Route path="/creditscore" element={<CreditScore />} />
+                    <Route path="/checkpurchaserequests" element={<PurchaseRequests />} />
+
+
+                    PurchaseRequests
                   </>
                 )}
                 <Route path="/logout" element={<Navigate to="/login" />} />
@@ -89,68 +143,65 @@ function App() {
             )}
           </Routes>
         </div>
-        <div className="logo-containerHm">
-          <img src={logoH} alt="Logo2" className="logoHm" />
-        </div>
         {isLoggedIn && (
-          <nav>
+          <nav className='bottomNav'>
             <ul className="nav-links">
               {userType === 'Borrower' && (
                 <>
+                  
                   <li>
-                    <Link to="/checkbalance" className="nav-link">
-                      Check Balance
+                    <Link to="/cashflows" className="nav-link">
+                      <img className='nav-icons' src={cash}  />
                     </Link>
                   </li>
                   <li>
-                    <Link to="/tokenrequest" className="nav-link">
-                      Request Loan
+                    <Link to="/accounts" className="nav-link">
+                    <img className='nav-icons' src={Wallet}  />
                     </Link>
                   </li>
                   <li>
-                    <Link to="/cashout" className="nav-link">
-                      Cash Out
+                    <Link to="/loans" className="nav-link">
+                    <img className='nav-icons' src={Loan}  />
                     </Link>
                   </li>
                   <li>
-                    <Link to="/topup" className="nav-link">
-                      Top Up
+                    <Link to="/marketplace" className="nav-link">
+                    <img className='nav-iconsS' src={Shop}  />
                     </Link>
                   </li>
-                  <li>
-                    <Link to="/transfer" className="nav-link">
-                      Repayments
-                    </Link>
-                  </li>
+                  
                 </>
               )}
               {userType === 'Admin' && (
                 <>
                   <li>
-                    <Link to="/kyc" className="nav-link">
+                    <Link to="/kyc" className="nav-linkA">
                       KYC
                     </Link>
                   </li>
                   <li>
-                    <Link to="/creditscore" className="nav-link">
+                    <Link to="/creditscore" className="nav-linkA">
                       Credit Score
                     </Link>
                   </li>
                   <li>
-                    <Link to="/checkrequests" className="nav-link">
-                      Check Requests
+                    <Link to="/checkrequests" className="nav-linkA">
+                      Loan Requests
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/checkpurchaserequests" className="nav-linkA">
+                      Asset Requests
                     </Link>
                   </li>
                 </>
               )}
-              <li>
-                <Link to="/logout" onClick={handleLogout} className="nav-link">
-                  Logout
-                </Link>
-              </li>
+            
             </ul>
           </nav>
+
         )}
+       
       </div>
     </Router>
   );

@@ -4,16 +4,92 @@
   margin: 0 auto;
   padding: 10px;
   background-color: #3E3C3C;
+  align-items: center; /* This will center the children horizontally */
+  
 }
 
 .nav-links {
+  
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    list-style: none;
+    padding: 0;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    margin: 0px;
+  }
+  
+
+
+
+
+
+.topNav {
   display: flex;
-  justify-content: center; /* Center the navigation items horizontally */
+  justify-content: center;
+  padding: 10px;
+  background-color: #1E1E1E; /* Example background color */
+  
+ 
+  border-radius: 10px;
+  margin-bottom: 5px;
+  margin-left: 0cm;
+  /* Add other styling for your nav bar here */
+}
+
+.bottomNav {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  background-color: #1E1E1E; /* Example background color */
+ 
+  border-radius: 10px;
+  
+}
+
+.nav-user-info {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.user-name {
+  margin-right: 10px; /* Space between name and picture */
+  font-size: 16px;
+  color: #D5FF0A; /* Example text color */
+}
+
+.user-profile-pic {
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  border-radius: 50%; /* Circular profile picture */
+  object-fit: cover; /* To maintain aspect ratio */
+}
+
+
+.nav-linksTop {
+  display: flex;
+  justify-content: flex-end; /* Center the navigation items horizontally */
   list-style: none;
   padding: 0; /* Remove unnecessary padding */
 }
 
+
 .nav-link {
+  
+  display: inline-block;
+  text-decoration: none;
+  padding: 10px;
+  background-color: #1E1E1E;
+  color: #1E1E1E;
+  border: none;
+  border-radius: 4px;
+  margin-right: 10px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+
+.nav-linkA {
   display: inline-block;
   text-decoration: none;
   padding: 10px;
@@ -26,9 +102,24 @@
   cursor: pointer;
 }
 
+.nav-linkTop {
+  display: inline-block;
+  text-decoration: none;
+  padding: 10px;
+  background-color: #D5FF0A;
+  color: #1E1E1E;
+  border: none;
+  border-radius: 4px;
+  margin-right: 10px;
+  font-size: 10px;
+  cursor: pointer;
+  
+}
+
 .view-container {
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+  align-items: center;
 }
 
 
@@ -53,4 +144,33 @@
   justify-content: center;
   margin-bottom: 20px;
   margin-top: 20px;
+}
+
+ 
+.nav-icons {
+  width: 50px;
+  height: auto;
+}
+
+.nav-iconsS {
+  width: 60px;
+  height: 60px;
+}
+
+@media (min-width: 768px) {
+  .topNav, .bottomNav {
+    justify-content: flex-end;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .nav-links {
+  
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    list-style: none;
+    padding: 0;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    margin-right: 35px;
+  }
 }
