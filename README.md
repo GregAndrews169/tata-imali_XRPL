@@ -89,13 +89,17 @@ The Tata-iMali platform integrates several XRPL operations across its system. Th
 
 #### `ConfigNewAsset.js`
 - **Connect to XRPL**: Establishes a connection with the XRP Ledger.
-- **Configure Cold Issuer Account**: Sets up the issuer account for new assets.
+- **Configure Cold Issuer Account**: Sets up the issuer account for tokenized assets (MTN, STX, APL).
 - **Configure Hot Issuer Account**: Prepares the operational account for transactions.
 - **Create Trust Line for Each Asset**: Establishes trust lines from the operational account to the issuer for each asset.
 - **Issue Token and Immediate Transfer**: Issues new tokens and transfers them immediately to the operational account.
 
 #### `ConfigAndIssue.js`
-- This module may include similar or additional configurations specific to the needs of the Tata-iMali application.
+- **Connect to XRPL**: Establishes a connection with the XRP Ledger.
+- **Configure Cold Issuer Account**: Sets up the issuer account for iMali-ZAR stablecoin.
+- **Configure Hot Issuer Account**: Prepares the operational account for transactions.
+- **Create Trust Line for Each Asset**: Establishes trust lines from the operational account to the issuer for the iMali-ZAR asset.
+- **Issue Token and Immediate Transfer**: Issues new tokens and transfers them immediately to the operational account.
 
 #### `MintiMaliZAR.js`
 - **Connect to Main Net**: Establishes a connection with the XRPL Main Net.
