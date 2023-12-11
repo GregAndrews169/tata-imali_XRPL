@@ -11,11 +11,21 @@
   - [Installation](#installation)
   - [Running the Program](#running-the-program)
 - [XRPL Code Structure](#xrpl-code-structure)
-  - [ConfigAndIssue.js](#xrpl-configuration-xrpl-configjs)
-  - [checkRequests.js](#checkrequestsjs)
-  - [checkBalance.js](#checkbalancejs)
-  - [transferForm.js](#transferformjs)
-  - [License](#License)
+  - [Prerequisite XRPL Operations](#prerequisite-xrpl-operations)
+    - [ConfigNewAsset.js](#confignewassetjs)
+    - [ConfigAndIssue.js](#configandissuejs)
+    - [MintiMaliZAR.js](#mintimalizarjs)
+  - [Onboarding](#onboarding)
+    - [signUp.js](#signupjs)
+  - [Borrower Operations](#borrower-operations)
+    - [checkBalance.js](#checkbalancejs)
+    - [assetHoldings.js](#assetholdingsjs)
+    - [transferForm.js](#transferformjs)
+  - [Admin Operations](#admin-operations)
+    - [assetPurchaseRequest.js](#assetpurchaserequestjs)
+    - [checkRequest.js](#checkrequestjs)
+  - [License](#license)
+
 
 ## Introduction
 
@@ -73,37 +83,68 @@ Note: Make sure you have satisfied all the prerequisites and dependencies before
 
 ## XRPL Code Structure
 
-### ConfigAndIssue.js
+The Tata-iMali platform integrates several XRPL operations across its system. The code is organized into modules covering asset configuration, user onboarding, borrower operations, and admin operations. Each module is designed to interact seamlessly with the XRPL, ensuring a robust and efficient micro-credit platform.
 
-Prerequisite: Create and fund three independent XRPL accounts with XRP using facet.
+### Prerequisite XRPL Operations
 
-- **Configure Cold Account Setting (Issuer Account):** Configure the settings for the cold account, which acts as the issuer account for the stablecoin.
+#### `ConfigNewAsset.js`
+- **Connect to XRPL**: Establishes a connection with the XRP Ledger.
+- **Configure Cold Issuer Account**: Sets up the issuer account for new assets.
+- **Configure Hot Issuer Account**: Prepares the operational account for transactions.
+- **Create Trust Line for Each Asset**: Establishes trust lines from the operational account to the issuer for each asset.
+- **Issue Token and Immediate Transfer**: Issues new tokens and transfers them immediately to the operational account.
 
-- **Configure Hot Account Settings (Capital Pool Account):** Configure the settings for the hot account, which serves as the capital pool account for lending.
+#### `ConfigAndIssue.js`
+- This module may include similar or additional configurations specific to the needs of the Tata-iMali application.
 
-- **Create Tust Line:** Establish a trust line from the hot account to the cold account and then from the borrower's account to the hot account.
+#### `MintiMaliZAR.js`
+- **Connect to Main Net**: Establishes a connection with the XRPL Main Net.
+- **Issue iMali-ZAR**: Issues the iMali-ZAR stablecoin.
+- **Immediate Transfer to Hot Account**: Transfers the issued iMali-ZAR immediately to the operational account.
 
-- **Issue ZAR Stablecoin:** Use the issuer account to issue ZAR stablecoin and transfer it to the hot (capital pool) account.
+### Onboarding
 
-- **Transfer from Hot to Borrower:** Transfer funds from the hot account to the borrower's account as part of the loan disbursement process.
+#### `signUp.js`
+- **Connect to XRPL**: Establishes a connection with the XRPL.
+- **Create New XRPL Account**: Generates a new XRPL account for the user.
+- **Obtain XRPL Address and Key**: Retrieves the address and private key for the account.
+- **Create Trust Line to All Assets**: Establishes trust lines from the new account to all relevant assets.
+- **Store XRPL Details in Database**: Saves the XRPL address and key in the database and associates them with the user.
 
-- **Check Account Balances:** Verify the success of the configuration and transactions by checking the account balances.
+### Borrower Operations
 
-### checkRequests.js
+#### `checkBalance.js`
+- **Authenticate User**: Verifies the current user's identity.
+- **Retrieve XRPL Account from Firebase**: Fetches the XRPL account details associated with the user.
+- **Request Account Lines**: Queries the XRPL for the account's credit lines.
+- **Extract 'ZAR' Balance**: Retrieves the ZAR balance of the account.
 
-In this module:
+#### `assetHoldings.js`
+- Similar operations as `checkBalance.js` for retrieving asset holdings information.
 
-- The borrower's loan request query is obtained from the Firebase server.
+#### `transferForm.js`
+- **Authenticate User**: Confirms the identity of the current user.
+- **Retrieve XRPL Key from Firebase**: Fetches the user's XRPL private key.
+- **Prepare Transfer Transaction**: Sets up a ZAR transfer transaction to the capital pool account for loan repayment.
+- **Sign Transaction with User Wallet**: Uses the user's wallet to sign the transaction.
 
-- The borrower's address and requested amount are appended to a transaction from the capital pool account to the borrower's end account. On approval of the loan, the transaction is signed and submitted.
+### Admin Operations
 
-### checkBalance.js
+#### `assetPurchaseRequest.js`
+- **AcceptPurchase**: Handles the purchase request for assets.
+    - Retrieves the XRPL address and key using the user ID from the request.
+    - Creates a transaction for asset transfer from MarketMaker to User.
+    - Sets up a ZAR payment transaction from User to MarketMaker.
+- **AcceptSale**: Manages the sale of assets.
+    - Retrieves the XRPL address and key using the user ID.
+    - Creates a transaction for asset transfer from User to MarketMaker.
+    - Arranges a ZAR payment transaction from MarketMaker to User.
 
-The borrower queries the balance of his iMali-ZAR stablecoin asset associated with his account.
+#### `checkRequest.js`
+- **AcceptRequest**: Processes loan requests.
+    - Retrieves the XRPL address using the user ID from the request.
+    - Creates a ZAR payment transaction from the capital pool to the borrower's address.
 
-### transferForm.js
-
-The borrower specifies the amount he would like to repay. This amount is then appended to a transaction and transferred from the borrower's account to the capital pool account.
 
 ## License
 
